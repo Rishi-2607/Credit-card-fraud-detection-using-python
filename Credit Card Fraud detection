@@ -1,0 +1,23 @@
+import pandas as pd
+from collections import Counter
+import itertools
+# Load the csv file
+dataframe = pd.read_csv("./Desktop/DataFlair/credit_card_fraud_detection/creditcard.csv")
+dataframe.head()
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+dataframe["NormalizedAmount"] = scaler.fit_transform(dataframe["Amount"].values.reshape(-1, 1))
+dataframe.drop(["Amount", "Time"], inplace= True, axis= 1)
+Y = dataframe["Class"]
+X = dataframe.drop(["Class"], axis= 1)
+from sklearn.model_selection import train_test_split
+(train_X, test_X, train_Y, test_Y) = train_test_split(X, Y, test_size= 0.3, random_state= 42)
+print("Shape of train_X: ", train_X.shape)
+print("Shape of test_X: ", test_X.shape)
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+#Decision Tree
+decision_tree = DecisionTreeClassifier()
+# Random Forest
+random_forest = RandomForestClassifier(n_estimators= 100)
